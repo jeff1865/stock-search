@@ -15,6 +15,9 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.suggest.SuggestBuilder;
+import org.elasticsearch.search.suggest.SuggestBuilders;
+import org.elasticsearch.search.suggest.SuggestionBuilder;
 
 
 /**
@@ -63,16 +66,25 @@ public class ElasticDataManager {
 
         SearchRequest searchRequest = new SearchRequest("bank");
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        // (1)
 //        searchSourceBuilder.query(QueryBuilders.matchAllQuery());
 //        searchSourceBuilder.query(QueryBuilders.termQuery("firstname", "Garcia"));
-
 //        searchSourceBuilder.query(QueryBuilders.termQuery("Blake", false));
+
+        // (2)
         MatchQueryBuilder matchQueryBuilder = new MatchQueryBuilder("firstname", "Rachelle1");
         matchQueryBuilder.fuzziness(Fuzziness.AUTO);
         matchQueryBuilder.prefixLength(3);
         matchQueryBuilder.maxExpansions(10);
-
         searchSourceBuilder.query(matchQueryBuilder);
+
+        // (3)
+        SuggestionBuilder termSuggestionBuilder =
+                SuggestBuilders.termSuggestion("firstname").text("Rachelle");
+        SuggestBuilder suggestBuilder = new SuggestBuilder();
+        suggestBuilder.addSuggestion("suggest_user", termSuggestionBuilder);
+        searchSourceBuilder.suggest(suggestBuilder);
+
 
         searchRequest.source(searchSourceBuilder);
 
