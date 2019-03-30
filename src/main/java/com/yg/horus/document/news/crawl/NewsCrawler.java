@@ -24,6 +24,7 @@ public class NewsCrawler {
     public void extractNewsContents() {
         String url = "https://finance.naver.com/news/mainnews.nhn?date=2019-03-22&page=1";
 
+
         Document doc = null;
         try {
             doc = Jsoup.connect(url).get();
