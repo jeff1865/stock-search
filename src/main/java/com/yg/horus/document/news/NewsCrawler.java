@@ -31,9 +31,7 @@ public class NewsCrawler {
 
     public List<HeadLineNews> extractNaverStockNewsList() {
         ArrayList<HeadLineNews> lstNews = new ArrayList<>() ;
-
-        String url = "https://finance.naver.com/news/mainnews.nhn?date=2019-03-29";
-
+        String url = "https://finance.naver.com/news/mainnews.nhn?date=2019-04-02";
 
         Document doc = null;
         try {
@@ -44,8 +42,17 @@ public class NewsCrawler {
             Elements blocks = newsBody.select("li.block1");
 
             blocks.forEach(element -> {
-                System.out.println("---------------------------------");
-                System.out.println(element.text()) ;
+                HeadLineNews hlNews = new HeadLineNews() ;
+
+                Elements title = element.select(".articleSubject a");
+
+                hlNews.setTitleAnchor(title.text());
+                hlNews.setUrl(title.attr("abs:href"));
+                hlNews.setSummary(element.select(".articleSummary").first().ownText());
+                hlNews.setIssuer(element.select("span.press").text());
+                hlNews.setTimestamp(element.select("span.wdate").text());
+
+                lstNews.add(hlNews) ;
             });
 
         } catch (IOException e) {

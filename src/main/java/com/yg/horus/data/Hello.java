@@ -3,6 +3,7 @@ package com.yg.horus.data;
 /**
  * Created by 1002000 on 2018. 10. 27..
  */
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,6 +14,7 @@ public class Hello {
     @GeneratedValue
     int id;
 
+    @Column(length = 500, nullable = false)
     String name;
 
     public int getId() {

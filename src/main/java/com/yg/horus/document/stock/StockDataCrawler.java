@@ -54,13 +54,13 @@ public class StockDataCrawler {
 //        }
         List<DailyInvestorValues> lstDVal = test.getDailyInvesterData();
         lstDVal.forEach(dival -> {
-            System.out.println("->" + dival) ;
+            System.out.println("StockValue->" + dival) ;
         });
 
     }
 
     public List<DailyInvestorValues> getDailyInvesterData() {
-        String url = "https://finance.naver.com/sise/investorDealTrendDay.nhn?bizdate=20190325&sosok=&page=1";
+        String url = "https://finance.naver.com/sise/investorDealTrendDay.nhn?bizdate=20190402&sosok=&page=1";
 
         ArrayList<DailyInvestorValues> lstDailyIntest = new ArrayList<DailyInvestorValues>() ;
 

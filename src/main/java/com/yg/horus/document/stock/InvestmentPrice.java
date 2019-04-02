@@ -17,4 +17,5 @@ public class InvestmentPrice {
     private int bank ;
     private int nationalFunt ;
     private int etc ;
+
 }
