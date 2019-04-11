@@ -9,8 +9,8 @@ import javax.persistence.Entity;
 /**
  * Created by 1002000 on 2019. 4. 4..
  */
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
-@Entity
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)
+//@Getter
+//@Entity
 public class NewsDailyHeadline {
 }
