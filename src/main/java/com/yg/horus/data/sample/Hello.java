@@ -1,4 +1,4 @@
-package com.yg.horus.data;
+package com.yg.horus.data.sample;
 
 /**
  * Created by 1002000 on 2018. 10. 27..

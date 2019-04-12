@@ -1,7 +1,7 @@
 package com.yg.horus.apis;
 
-import com.yg.horus.data.Hello;
-import com.yg.horus.data.HelloDao;
+import com.yg.horus.data.sample.Hello;
+import com.yg.horus.data.sample.HelloDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
