@@ -1,8 +1,6 @@
 package com.yg.horus.document.nlp;
 
-import org.datavec.api.util.ClassPathResource;
 import org.deeplearning4j.models.embeddings.learning.impl.elements.SkipGram;
-import org.deeplearning4j.models.embeddings.learning.impl.sequence.DBOW;
 import org.deeplearning4j.models.paragraphvectors.ParagraphVectors;
 import org.deeplearning4j.models.word2vec.VocabWord;
 import org.deeplearning4j.models.word2vec.wordstore.inmemory.AbstractCache;
@@ -10,10 +8,8 @@ import org.deeplearning4j.text.documentiterator.LabelsSource;
 import org.deeplearning4j.text.sentenceiterator.BasicLineIterator;
 import org.deeplearning4j.text.sentenceiterator.SentenceIterator;
 import org.deeplearning4j.text.tokenization.tokenizer.preprocessor.CommonPreprocessor;
-import org.deeplearning4j.text.tokenization.tokenizerfactory.DefaultTokenizerFactory;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.KoreanTokenizerFactory;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.TokenizerFactory;
-import org.deeplearning4j.text.tokenization.tokenizer.KoreanTokenizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

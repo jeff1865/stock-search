@@ -1,9 +1,5 @@
 package com.yg.horus.document.stock.analysis;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.impl.model.file.FileDataModel;
 import org.apache.mahout.cf.taste.impl.neighborhood.ThresholdUserNeighborhood;
@@ -14,6 +10,10 @@ import org.apache.mahout.cf.taste.neighborhood.UserNeighborhood;
 import org.apache.mahout.cf.taste.recommender.RecommendedItem;
 import org.apache.mahout.cf.taste.recommender.UserBasedRecommender;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by 1002000 on 2018. 8. 27..

@@ -3,11 +3,8 @@ package temporary.io.exam;
 /**
  * Created by jeff on 4/11/19.
  */
+
 import java.io.*;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.LinkedList;
 
 public class Ans5 {
 

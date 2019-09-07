@@ -1,8 +1,6 @@
 package temporary.io;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 /**
  * Created by 1002000 on 2019. 4. 11..
