@@ -1,21 +1,17 @@
 spring:
   profiles: local
-  datasource:
-    username: root
-    password: 1865
-    jdbcUrl: jdbc:mysql://localhost:3306/xcrawl?useUnicode=true&characterEncoding=utf8
-    url: jdbc:mysql://localhost:3306/xcrawl?useUnicode=true&characterEncoding=utf8
-    driver-class-name: com.mysql.jdbc.Driver
 logging:
   config: classpath:logback-spring.xml
+internal:
+  elastic:
+    host: localhost
+    port: 9200
 ---
 spring:
   profiles: localLive
-  datasource:
-    username: crawladm
-    password: devcrawl*94!
-    jdbcUrl: jdbc:mariadb://1:3306/crawl
-    url: jdbc:mariadb://1:3306/crawl
-    driver-class-name: org.mariadb.jdbc.Driver
 logging:
   config: classpath:logback-spring.xml
+internal:
+  elastic:
+    host: localhost
+    port: 9200

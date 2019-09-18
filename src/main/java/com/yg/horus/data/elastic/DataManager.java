@@ -1,15 +1,29 @@
 package com.yg.horus.data.elastic;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yg.horus.data.elastic.data.News;
 import org.apache.http.HttpHost;
+import org.elasticsearch.action.DocWriteRequest;
+import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.support.master.AcknowledgedResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.common.xcontent.XContent;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 
@@ -17,8 +31,62 @@ import java.util.concurrent.TimeUnit;
  * Created by 1002000 on 2019. 8. 19..
  */
 public class DataManager {
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public static void main(String ... v) throws Exception {
+    @Value("${internal.elastic.host}")
+    private String elasticHost = "localhost" ;
+    @Value("${internal.elastic.port}")
+    private int elasticPort = 9200 ;
+
+    private ObjectMapper mapper = new ObjectMapper();
+
+    public DataManager() {
+        ;
+    }
+
+    public void putNews(News news) {
+        RestHighLevelClient client = new RestHighLevelClient(
+                RestClient.builder(new HttpHost(elasticHost, elasticPort, "http")));
+//        PutMappingRequest request = new PutMappingRequest("test_news");
+        IndexRequest request = new IndexRequest("test_news2");
+
+        try {
+            request.id("123");
+//            request.source(this.mapper.writeValueAsString(news), XContentType.JSON);
+//            System.out.println("-->" + request.source().utf8ToString());
+//            AcknowledgedResponse response = client.indices().putMapping(request, RequestOptions.DEFAULT) ;
+            String jsonString = "{" +
+                    "\"user\":\"kimchy\"," +
+                    "\"postDate\":\"2013-01-30\"," +
+                    "\"message\":\"trying out Elasticsearch\"" +
+                    "}";
+            request.source(jsonString, XContentType.JSON);
+//            request.opType(DocWriteRequest.OpType.CREATE);
+
+            IndexResponse response = client.index(request, RequestOptions.DEFAULT);
+
+            client.close();
+            System.out.println("Response -> " + response.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String ... v) {
+        System.out.println("Active System ..");
+
+        DataManager test = new DataManager() ;
+
+        News news = new News() ;
+//        news.setTitle("뉴스 테스트 :: 서민일보");
+//        news.setContent("TESTTESTTESTTESTTESTTESTTESTTESTTEST TEST");
+//        news.setAnchorTitle("충격 뉴스가 테스트를???");
+//        news.setPostTime("NA");
+
+        test.putNews(news);
+    }
+
+    public static void main1(String ... v) throws Exception {
         System.out.println("Active System .. " + System.currentTimeMillis()) ;
 
         RestHighLevelClient client = new RestHighLevelClient(
