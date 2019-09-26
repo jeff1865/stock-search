@@ -66,24 +66,25 @@ public class DataManager {
         }
     }
 
-    public <T> String putData(String index, T data) {
+    public <T> String putData(String index, String id, T data) {
         RestHighLevelClient client = new RestHighLevelClient(
                 RestClient.builder(new HttpHost(elasticHost, elasticPort, "http")));
         IndexRequest request = new IndexRequest(index);
 
-
-        String id = null ;
+        String resId = null ;
         try {
+            request.id(id) ;
             request.source(this.mapper.writeValueAsString(data), XContentType.JSON);
 
             IndexResponse response = client.index(request, RequestOptions.DEFAULT);
-            id = response.getId() ;
+            resId = response.getId() ;
+
             client.close();
         } catch(Exception e) {
             e.printStackTrace();
         }
 
-        return id ;
+        return resId ;
     }
 
     public static void main(String ... v) {

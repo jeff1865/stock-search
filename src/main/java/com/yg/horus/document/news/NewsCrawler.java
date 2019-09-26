@@ -31,7 +31,7 @@ public class NewsCrawler {
 
     public List<HeadLineNews> extractNaverStockNewsList() {
         ArrayList<HeadLineNews> lstNews = new ArrayList<>() ;
-        String url = "https://finance.naver.com/news/mainnews.nhn?date=2019-04-02";
+        String url = "https://finance.naver.com/news/mainnews.nhn?date=2019-09-25";
 
         Document doc = null;
         try {

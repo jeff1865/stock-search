@@ -39,7 +39,7 @@ public class DataController {
         StringBuilder sb = new StringBuilder() ;
         dailyInvesterData.forEach(iv -> {
 
-            String id = this.dataManager.putData("test-dailyinvs1", iv) ;
+            String id = this.dataManager.putData("test-dailyinvs2", "IVS_" + iv.getDateStamp(), iv) ;
             System.out.println("Put Result : " + id);
             sb.append(iv.toString()).append("<br/>") ;
         });
