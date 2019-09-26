@@ -4,7 +4,10 @@ import com.yg.horus.document.stock.data.DailyInvestorValues;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Service;
 
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -14,53 +17,24 @@ import java.util.List;
 /**
  * Created by 1002000 on 2018. 8. 24..
  */
+@Service
 public class StockDataCrawler {
-
-    // 날짜 개인 외국인 기관계 금융투자 보험 투신 은행 연기금 국가 기타법인
-    public static void crawlAmtOfinvestors() {
-        ;
-    }
-
-    // 날짜 체결가 전일비 등락률 거래량 거래대금
-    public static void kospiIndex() {
-        ;
-    }
-
     private DecimalFormat dc = new DecimalFormat("###,###,###,###") ;
 
-
     public static void main(String ... v) {
+
         StockDataCrawler test = new StockDataCrawler() ;
 
-
         System.out.println("Active System");
-//        String url = "http://finance.daum.net/quote/investor_yyyymmdd.daum?page=20&stype=P&type=null";
-//
-//        Document doc = null;
-//        try {
-//            doc = Jsoup.connect(url).get();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        System.out.println(doc.title());
-//        Elements datas = doc.select("td.datetime2");
-//        for (Element data : datas) {
-//            System.out.println(">>" + data.ownText());
-//
-//            Elements siblings = data.siblingElements();
-//            for(Element sib : siblings) {
-//                System.out.println("\t->" + sib.text());
-//            }
-//        }
-        List<DailyInvestorValues> lstDVal = test.getDailyInvesterData();
+
+        List<DailyInvestorValues> lstDVal = test.getDailyInvesterData("20190902");
         lstDVal.forEach(dival -> {
             System.out.println("StockValue->" + dival) ;
         });
-
     }
 
-    public List<DailyInvestorValues> getDailyInvesterData() {
-        String url = "https://finance.naver.com/sise/investorDealTrendDay.nhn?bizdate=20190402&sosok=&page=1";
+    public List<DailyInvestorValues> getDailyInvesterData(String yyyyMMdd) {
+        String url = "https://finance.naver.com/sise/investorDealTrendDay.nhn?bizdate=" + yyyyMMdd + "&sosok=&page=1";
 
         ArrayList<DailyInvestorValues> lstDailyIntest = new ArrayList<DailyInvestorValues>() ;
 

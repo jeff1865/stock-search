@@ -22,6 +22,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -30,6 +31,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by 1002000 on 2019. 8. 19..
  */
+@Service
 public class DataManager {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -48,20 +50,12 @@ public class DataManager {
         RestHighLevelClient client = new RestHighLevelClient(
                 RestClient.builder(new HttpHost(elasticHost, elasticPort, "http")));
 //        PutMappingRequest request = new PutMappingRequest("test_news");
-        IndexRequest request = new IndexRequest("test_news2");
+        IndexRequest request = new IndexRequest("test_news3");
 
         try {
-            request.id("123");
-//            request.source(this.mapper.writeValueAsString(news), XContentType.JSON);
-//            System.out.println("-->" + request.source().utf8ToString());
-//            AcknowledgedResponse response = client.indices().putMapping(request, RequestOptions.DEFAULT) ;
-            String jsonString = "{" +
-                    "\"user\":\"kimchy\"," +
-                    "\"postDate\":\"2013-01-30\"," +
-                    "\"message\":\"trying out Elasticsearch\"" +
-                    "}";
-            request.source(jsonString, XContentType.JSON);
-//            request.opType(DocWriteRequest.OpType.CREATE);
+//            request.id("123");
+            request.source(this.mapper.writeValueAsString(news), XContentType.JSON);
+            System.out.println("-->" + request.source().utf8ToString());
 
             IndexResponse response = client.index(request, RequestOptions.DEFAULT);
 
@@ -70,6 +64,26 @@ public class DataManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public <T> String putData(String index, T data) {
+        RestHighLevelClient client = new RestHighLevelClient(
+                RestClient.builder(new HttpHost(elasticHost, elasticPort, "http")));
+        IndexRequest request = new IndexRequest(index);
+
+
+        String id = null ;
+        try {
+            request.source(this.mapper.writeValueAsString(data), XContentType.JSON);
+
+            IndexResponse response = client.index(request, RequestOptions.DEFAULT);
+            id = response.getId() ;
+            client.close();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return id ;
     }
 
     public static void main(String ... v) {
