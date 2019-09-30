@@ -7,6 +7,7 @@ import lombok.Data;
  */
 @Data
 public class HeadLineNews {
+    private String id ;
     private String titleAnchor;
     private String summary ;
     private String timestamp ;

@@ -4,7 +4,9 @@ import com.yg.horus.document.news.data.HeadLineNews;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Service;
 
+import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.List;
 /**
  * Created by 1002000 on 2019. 3. 25..
  */
+@Service
 public class NewsCrawler {
 
     public NewsCrawler() {
@@ -21,7 +24,7 @@ public class NewsCrawler {
     public static void main(String ... v) {
         NewsCrawler test = new NewsCrawler() ;
 
-        List<HeadLineNews> headLineNewses = test.extractNaverStockNewsList();
+        List<HeadLineNews> headLineNewses = test.extractNaverStockNewsList("2019-09-30");
 
         headLineNewses.forEach(news -> {
             if(news != null) System.out.println("CrawledNews -> " + news);
@@ -29,9 +32,12 @@ public class NewsCrawler {
 
     }
 
-    public List<HeadLineNews> extractNaverStockNewsList() {
+    public List<HeadLineNews> extractNaverStockNewsList(String formedStrDay) {
+        if(formedStrDay == null) {
+            formedStrDay = "2019-09-25" ;
+        }
         ArrayList<HeadLineNews> lstNews = new ArrayList<>() ;
-        String url = "https://finance.naver.com/news/mainnews.nhn?date=2019-09-25";
+        String url = "https://finance.naver.com/news/mainnews.nhn?date=" + formedStrDay;
 
         Document doc = null;
         try {

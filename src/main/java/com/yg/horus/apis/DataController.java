@@ -3,6 +3,8 @@ package com.yg.horus.apis;
 import com.yg.horus.data.elastic.DataManager;
 import com.yg.horus.data.sample.Hello;
 import com.yg.horus.data.sample.HelloDao;
+import com.yg.horus.document.news.NewsCrawler;
+import com.yg.horus.document.news.data.HeadLineNews;
 import com.yg.horus.document.stock.StockDataCrawler;
 import com.yg.horus.document.stock.data.DailyInvestorValues;
 import org.slf4j.Logger;
@@ -26,6 +28,8 @@ public class DataController {
     private DataManager dataManager = null ;
     @Autowired
     private StockDataCrawler stockDataCrawler = null ;
+    @Autowired
+    private NewsCrawler newsCrawler = null;
 
 
     public DataController() {
@@ -43,6 +47,24 @@ public class DataController {
             System.out.println("Put Result : " + id);
             sb.append(iv.toString()).append("<br/>") ;
         });
+
+        return sb.toString() ;
+    }
+
+
+    @RequestMapping("/addNews")
+    public String addNews(Model model, @RequestParam String day) {
+        List<HeadLineNews> headNews = this.newsCrawler.extractNaverStockNewsList(day);
+
+        headNews.forEach(hn -> {
+            String url = hn.getUrl();
+            int st =  url.indexOf("article_id=") + "article_id=".length();
+            String id = url.substring(st, url.indexOf("&", st)) ;
+
+            System.out.println(id + " --> " + hn) ;
+        });
+
+        StringBuilder sb = new StringBuilder() ;
 
         return sb.toString() ;
     }

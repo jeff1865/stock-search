@@ -18,7 +18,7 @@ public class CrawlJobManager {
     }
 
     public void storeInvestmentData() {
-
+        ;
     }
 
 
