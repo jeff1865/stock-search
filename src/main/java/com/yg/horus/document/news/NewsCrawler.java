@@ -24,7 +24,7 @@ public class NewsCrawler {
     public static void main(String ... v) {
         NewsCrawler test = new NewsCrawler() ;
 
-        List<HeadLineNews> headLineNewses = test.extractNaverStockNewsList("2019-09-30");
+        List<HeadLineNews> headLineNewses = test.extractNaverStockNewsList("2019-11-29");
 
         headLineNewses.forEach(news -> {
             if(news != null) System.out.println("CrawledNews -> " + news);
