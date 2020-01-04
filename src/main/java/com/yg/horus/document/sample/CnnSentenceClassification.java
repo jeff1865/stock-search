@@ -46,9 +46,9 @@ import java.util.*;
 public class CnnSentenceClassification {
 
     /** Location to save and extract the training/testing data */
-    public static final String DATA_PATH = FilenameUtils.concat(System.getProperty("java.io.tmpdir"), "dl4j_w2vSentiment/");
+    public static final String DATA_PATH = FilenameUtils.concat("/home/jeff/dev/temp_cnn", "dl4j_w2vSentiment/");
     /** Location (local file system) for the Google News vectors. Set this manually. */
-    private static final String WORD_VECTORS_PATH = "/PATH/TO/YOUR/VECTORS/GoogleNews-vectors-negative300.bin.gz";
+    private static final String WORD_VECTORS_PATH = "/home/jeff/dev/temp-rnn/raw/GoogleNews-vectors-negative300.bin.gz";
 
     public static void main(String[] args) throws Exception {
         //noinspection ConstantConditions

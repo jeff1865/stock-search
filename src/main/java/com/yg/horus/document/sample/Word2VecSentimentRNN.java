@@ -55,12 +55,15 @@ public class Word2VecSentimentRNN {
     /** Data URL for downloading */
     public static final String DATA_URL = "http://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar.gz";
     /** Location to save and extract the training/testing data */
-    public static final String DATA_PATH = FilenameUtils.concat(System.getProperty("java.io.tmpdir"), "dl4j_w2vSentiment/");
+    public static final String DATA_PATH = FilenameUtils.concat("/home/jeff/dev/temp-rnn/model", "dl4j_w2vSentiment/");
     /** Location (local file system) for the Google News vectors. Set this manually. */
-    public static final String WORD_VECTORS_PATH = "/PATH/TO/YOUR/VECTORS/GoogleNews-vectors-negative300.bin.gz";
+    public static final String WORD_VECTORS_PATH = "/home/jeff/dev/temp-rnn/raw/GoogleNews-vectors-negative300.bin.gz";
 
 
     public static void main(String[] args) throws Exception {
+//        System.setProperty("org.bytedeco.javacpp.nopointergc","true");
+
+
         if(WORD_VECTORS_PATH.startsWith("/PATH/TO/YOUR/VECTORS/")){
             throw new RuntimeException("Please set the WORD_VECTORS_PATH before running this example");
         }
