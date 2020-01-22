@@ -3,7 +3,6 @@ package com.yg.horus.document.sample;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-//import org.deeplearning4j.examples.recurrent.word2vecsentiment.Word2VecSentimentRNN;
 import org.deeplearning4j.iterator.CnnSentenceDataSetIterator;
 import org.deeplearning4j.iterator.CnnSentenceDataSetIterator.Format;
 import org.deeplearning4j.iterator.LabeledSentenceProvider;
@@ -46,15 +45,18 @@ import java.util.*;
 public class CnnSentenceClassification {
 
     /** Location to save and extract the training/testing data */
-    public static final String DATA_PATH = FilenameUtils.concat(System.getProperty("java.io.tmpdir"), "dl4j_w2vSentiment/");
+    public static final String DATA_PATH = FilenameUtils.concat("/home/jeff/dev/temp_cnn", "dl4j_w2vSentiment/");
     /** Location (local file system) for the Google News vectors. Set this manually. */
-    private static final String WORD_VECTORS_PATH = "/PATH/TO/YOUR/VECTORS/GoogleNews-vectors-negative300.bin.gz";
+    private static final String WORD_VECTORS_PATH = "/home/jeff/dev/temp-rnn/raw/GoogleNews-vectors-negative300.bin.gz";
 
     public static void main(String[] args) throws Exception {
         //noinspection ConstantConditions
         if(WORD_VECTORS_PATH.startsWith("/PATH/TO/YOUR/VECTORS/")){
             throw new RuntimeException("Please set the WORD_VECTORS_PATH before running this example");
         }
+
+
+//        System.out.println("OpenCV load completed ..");
 
         //Download and extract data
         Word2VecSentimentRNN.downloadData();
@@ -124,6 +126,7 @@ public class CnnSentenceClassification {
 
         //Load word vectors and get the DataSetIterators for training and testing
         System.out.println("Loading word vectors and creating DataSetIterators");
+
         WordVectors wordVectors = WordVectorSerializer.loadStaticModel(new File(WORD_VECTORS_PATH));
         DataSetIterator trainIter = getDataSetIterator(true, wordVectors, batchSize, truncateReviewsToLength, rng);
         DataSetIterator testIter = getDataSetIterator(false, wordVectors, batchSize, truncateReviewsToLength, rng);
