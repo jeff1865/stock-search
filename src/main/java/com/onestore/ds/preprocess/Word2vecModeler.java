@@ -4,18 +4,16 @@ import org.deeplearning4j.models.embeddings.WeightLookupTable;
 import org.deeplearning4j.models.embeddings.inmemory.InMemoryLookupTable;
 import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
 import org.deeplearning4j.models.word2vec.VocabWord;
+import org.deeplearning4j.models.word2vec.Word2Vec;
 import org.deeplearning4j.models.word2vec.wordstore.inmemory.InMemoryLookupCache;
 import org.deeplearning4j.text.sentenceiterator.BasicLineIterator;
-import org.deeplearning4j.text.tokenization.tokenizerfactory.KoreanTokenizerFactory;
-
-import java.io.File;
-
-import org.deeplearning4j.models.word2vec.Word2Vec;
 import org.deeplearning4j.text.tokenization.tokenizer.preprocessor.CommonPreprocessor;
+import org.deeplearning4j.text.tokenization.tokenizerfactory.KoreanTokenizerFactory;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.TokenizerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.Collection;
 
 /**
@@ -72,7 +70,7 @@ public class Word2vecModeler {
         lst = vec.wordsNearest("쿠폰", 20);
         System.out.println("Closest words to 'day' on 1st run: " + lst);
 
-        WordVectorSerializer.writeWord2VecModel(vec, new File("sample/comment_1e5_model.mdl"));
+        WordVectorSerializer.writeWord2VecModel(vec, new File("/Users/a1000074/dev/temp-comment/model/w2v_comment_5e6.txt"));
 
         System.out.println("Job Completed");
 

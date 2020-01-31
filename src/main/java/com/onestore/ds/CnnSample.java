@@ -1,9 +1,9 @@
 package com.onestore.ds;
 
 import org.datavec.image.loader.CifarLoader;
+import org.deeplearning4j.common.resources.DL4JResources;
 import org.deeplearning4j.datasets.fetchers.DataSetType;
 import org.deeplearning4j.datasets.iterator.impl.Cifar10DataSetIterator;
-import org.deeplearning4j.common.resources.DL4JResources;
 import org.deeplearning4j.nn.api.OptimizationAlgorithm;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration;

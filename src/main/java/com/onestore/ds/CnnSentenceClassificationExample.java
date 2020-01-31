@@ -2,7 +2,6 @@ package com.onestore.ds;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-//import org.deeplearning4j.examples.recurrent.word2vecsentiment.Word2VecSentimentRNN;
 import org.deeplearning4j.iterator.CnnSentenceDataSetIterator;
 import org.deeplearning4j.iterator.CnnSentenceDataSetIterator.Format;
 import org.deeplearning4j.iterator.LabeledSentenceProvider;
@@ -24,7 +23,6 @@ import org.deeplearning4j.nn.weights.WeightInit;
 import org.deeplearning4j.optimize.api.InvocationType;
 import org.deeplearning4j.optimize.listeners.EvaluativeListener;
 import org.deeplearning4j.optimize.listeners.ScoreIterationListener;
-import org.deeplearning4j.text.tokenization.tokenizerfactory.KoreanTokenizerFactory;
 import org.nd4j.linalg.activations.Activation;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
@@ -36,6 +34,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.*;
+
+//import org.deeplearning4j.examples.recurrent.word2vecsentiment.Word2VecSentimentRNN;
 
 /**
  * Convolutional Neural Networks for Sentence Classification - https://arxiv.org/abs/1408.5882

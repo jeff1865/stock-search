@@ -71,7 +71,7 @@ public class ParagVectorsClassifier {
                 .minLearningRate(0.001)
                 .batchSize(1000)
                 .epochs(20)
-//                .labelsSource(iterator.getLabelsSource())   // Added manually
+                .labelsSource(iterator.getLabelsSource())   // Added manually
                 .iterate(iterator)
                 .trainWordVectors(true)
                 .tokenizerFactory(tokenizerFactory)

@@ -7,11 +7,14 @@ import org.deeplearning4j.models.word2vec.wordstore.inmemory.AbstractCache;
 import org.deeplearning4j.text.documentiterator.LabelsSource;
 import org.deeplearning4j.text.sentenceiterator.BasicLineIterator;
 import org.deeplearning4j.text.sentenceiterator.SentenceIterator;
-import org.deeplearning4j.text.tokenization.tokenizer.preprocessor.CommonPreprocessor;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.KoreanTokenizerFactory;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.TokenizerFactory;
+import org.nd4j.linalg.factory.Nd4j;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Hashtable;
 
@@ -23,7 +26,7 @@ public class Doc2vecProcessor {
     public static void buildModel() {
         //        File file = new File("sample/oney_comment_1E5.csv");
 //        File file = new File("/Users/a1000074/dev/temp-comment/latest_comment_5e6_20200107.txt");
-        File file = new File("/Users/a1000074/dev/temp-comment/sample_comment10000.txt");
+        File file = new File("/Users/a1000074/dev/temp-comment/latest_comment_6e5.txt");
         try {
             Hashtable<String, String> sentenceMap = getSentenceMap(file);
 
@@ -54,7 +57,7 @@ public class Doc2vecProcessor {
             vec.fit();
 
             System.out.println("Writing Paragraph Model to file ..");
-            WordVectorSerializer.writeParagraphVectors(vec, "/Users/a1000074/dev/temp-comment/sample_comment10000.mdl");
+            WordVectorSerializer.writeParagraphVectors(vec, "/Users/a1000074/dev/temp-comment/latest_comment_6e5.mdl");
             System.out.println("Writing model completed ..");
 
             Collection<String> nearLabels = vec.nearestLabels("왜ㅋㅋㅋ내컨설 지멋대로 삭제하심??ㅋㅋㅋ 걍 얼굴 셀카올린건데  일제대로하는거맞죠?ㅋㅋ", 20);
@@ -74,20 +77,45 @@ public class Doc2vecProcessor {
 
 //        buildModel();
 
+
+        Nd4j.getMemoryManager().setAutoGcWindow(10000);             //Set to 10 seconds (10000ms) between System.gc() calls
+//        Nd4j.getMemoryManager().togglePeriodicGc(false);            //Disable periodic GC calls
+
+        File file = new File("/Users/a1000074/dev/temp-comment/latest_comment_6e5.txt");
         try {
+            Hashtable<String, String> sentenceMap = getSentenceMap(file);
+
             long ts = System.currentTimeMillis();
-            ParagraphVectors vec = WordVectorSerializer.readParagraphVectors(new File("/Users/a1000074/dev/temp-comment/model_comment_5e6.mdl"));
+            ParagraphVectors vec = WordVectorSerializer.readParagraphVectors(new File("/Users/a1000074/dev/temp-comment/model/p2v_comment_6e5.mdl"));
 //            ParagraphVectors vec = WordVectorSerializer.readParagraphVectors(new File("/Users/a1000074/dev/temp-comment/sample_comment10000.mdl"));
             vec.setTokenizerFactory(new KoreanTokenizerFactory());
             System.out.println("Read completed for " + (System.currentTimeMillis() - ts) + "msec");
 
+            ts = System.currentTimeMillis();
+
             Collection<String> labels = vec.nearestLabels("왜ㅋㅋㅋ내컨설 지멋대로 삭제하심??ㅋㅋㅋ 걍 얼굴 셀카올린건데  일제대로하는거맞죠?ㅋㅋ", 5);
-            System.out.println("Nearest Labels -> " + labels);
+            System.out.println("Nearest Labels -> " + labels + " at " + (System.currentTimeMillis() - ts));
+            labels.forEach(label -> {
+                System.out.println("-->" + label + " : " + sentenceMap.get(label));
+            });
+
+            ts = System.currentTimeMillis();
+            labels = vec.nearestLabels("정말 재미없다", 5);
+            System.out.println("Nearest Labels -> " + labels + " at " + (System.currentTimeMillis() - ts));
+            labels.forEach(label -> {
+                System.out.println("-->" + label + " : " + sentenceMap.get(label));
+            });
+
+            ts = System.currentTimeMillis();
+            labels = vec.nearestLabels("왜ㅋㅋㅋ내컨설 지멋대로 삭제하심??ㅋㅋㅋ 걍 얼굴 셀카올린건데  일제대로하는거맞죠?ㅋㅋ", 5);
+            System.out.println("Nearest Labels -> " + labels + " at " + (System.currentTimeMillis() - ts));
+            labels.forEach(label -> {
+                System.out.println("-->" + label + " : " + sentenceMap.get(label));
+            });
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
     }
 
