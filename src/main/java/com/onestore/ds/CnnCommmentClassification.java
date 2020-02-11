@@ -121,7 +121,7 @@ public class CnnCommmentClassification {
                 .addLayer("out", new OutputLayer.Builder()
                         .lossFunction(LossFunctions.LossFunction.MCXENT)
                         .activation(Activation.SOFTMAX)
-                        .nOut(2)    //2 classes: positive or negative   // CHD
+                        .nOut(1)    //2 classes: positive or negative   // CHD
                         .build(), "globalPool")
                 .setOutputs("out")
                 //Input has shape [minibatch, channels=1, length=1 to 256, 300]
@@ -139,15 +139,17 @@ public class CnnCommmentClassification {
 
         System.out.println("Loading word vectors and creating DataSetIterators");
         WordVectors wordVectors = WordVectorSerializer.loadStaticModel(new File(WORD_VECTORS_PATH));    // Load genModel
-        this.trainIter = getDataSetIterator(true, wordVectors, batchSize, truncateReviewsToLength, rng);
-        this.testIter = getDataSetIterator(false, wordVectors, batchSize, truncateReviewsToLength, rng);
+//        this.trainIter = getDataSetIterator(true, wordVectors, batchSize, truncateReviewsToLength, rng);
+//        this.testIter = getDataSetIterator(false, wordVectors, batchSize, truncateReviewsToLength, rng);
+        this.trainIter = getVocDataSetIterator(true, wordVectors, batchSize, truncateReviewsToLength, rng);
+        this.testIter = getVocDataSetIterator(false, wordVectors, batchSize, truncateReviewsToLength, rng);
 
         System.out.println("Starting training");
         net.setListeners(new ScoreIterationListener(100), new EvaluativeListener(testIter, 1, InvocationType.EPOCH_END));
         net.fit(trainIter, nEpochs);
 
         try {
-            net.save(new File("/Users/a1000074/dev/data/comment_sample2/fin_model/cnnClass3b.mdl"));
+            net.save(new File("/Users/a1000074/dev/data/comment_sample2/fin_model/cnnClass1VocOnly.mdl"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -170,17 +172,56 @@ public class CnnCommmentClassification {
         System.out.println("------------------>" + (System.currentTimeMillis() - ts)) ;
     }
 
+    @Deprecated
+    private DataSetIterator getVocDataSetIterator(boolean isTraining, WordVectors wordVectors, int minibatchSize,
+                                               int maxSentenceLength, Random rng ){
+//        String path = FilenameUtils.concat("/Users/a1000074/dev/temp-comment/train", (isTraining ? "train/" : "test/"));
+
+        String path = "";
+        if(isTraining) {
+            path = "/Users/a1000074/dev/temp-comment/train/voc/train";
+        } else {
+            path = "/Users/a1000074/dev/temp-comment/train/voc/test";
+        }
+
+        String vocBaseDir = path;
+
+        File fileVoc = new File(vocBaseDir);    // CHD
+
+        Map<String,List<File>> reviewFilesMap = new HashMap<>();
+//        reviewFilesMap.put("Positive", Arrays.asList(Objects.requireNonNull(filePositive.listFiles())));
+//        reviewFilesMap.put("Negative", Arrays.asList(Objects.requireNonNull(fileNegative.listFiles())));
+        reviewFilesMap.put("Voc", Arrays.asList(Objects.requireNonNull(fileVoc.listFiles())));  // CHD
+
+        LabeledSentenceProvider sentenceProvider = new FileLabeledSentenceProvider(reviewFilesMap, rng);
+
+        CnnSentenceDataSetIterator build = new CnnSentenceDataSetIterator.Builder(CnnSentenceDataSetIterator.Format.CNN2D)
+                .tokenizerFactory(new KoreanTokenizerFactory())
+                .sentenceProvider(sentenceProvider)     // MDFD
+                .wordVectors(wordVectors)
+                .minibatchSize(minibatchSize)
+                .maxSentenceLength(maxSentenceLength)
+                .useNormalizedWordVectors(false)
+                .build();
+
+        System.out.println("Craeted Labels ->" + build.getLabels());
+        build.forEachRemaining(ds -> {
+            System.out.println("DSet ->" +ds.asList().toArray());
+        });
+
+        return build;
+    }
 
     private DataSetIterator getDataSetIterator(boolean isTraining, WordVectors wordVectors, int minibatchSize,
                                                       int maxSentenceLength, Random rng ){
         String path = FilenameUtils.concat(DATA_PATH, (isTraining ? "train/" : "test/"));
         String positiveBaseDir = FilenameUtils.concat(path, "pos");
         String negativeBaseDir = FilenameUtils.concat(path, "neg");
-        String vocBaseDir = FilenameUtils.concat(path, "voc");    // CHD
+//        String vocBaseDir = FilenameUtils.concat(path, "voc");    // CHD
 
         File filePositive = new File(positiveBaseDir);
         File fileNegative = new File(negativeBaseDir);
-        File fileVoc = new File(vocBaseDir);    // CHD
+//        File fileVoc = new File(vocBaseDir);    // CHD
 
         Map<String,List<File>> reviewFilesMap = new HashMap<>();
         reviewFilesMap.put("Positive", Arrays.asList(Objects.requireNonNull(filePositive.listFiles())));
@@ -210,8 +251,8 @@ public class CnnCommmentClassification {
         System.out.println("Active System ..") ;
 
         CnnCommmentClassification test = new CnnCommmentClassification() ;
-//        test.train();
-        test.load();
+        test.train();
+//        test.load();
 
         test.anlayzePolarity("진짜 좋아요 강추");
         test.anlayzePolarity("과금 유도가 심하여 바로 지웠다");
@@ -230,6 +271,14 @@ public class CnnCommmentClassification {
         test.anlayzePolarity("다운로드가 안되요");
         test.anlayzePolarity("화면이 멈춰있고 실생도 안되요");
         test.anlayzePolarity("결제했는데 아이템은 왜 안주는거임?");
+
+        test.anlayzePolarity("빨리복구하세요");
+        test.anlayzePolarity("설치중에서 10분넘어가도 안되고 취소도안되는데 어쩌자는건가요;;용량만 크고 광고만해대더니 이렇게 형편없을수가 있나요;;");
+        test.anlayzePolarity("설치 왤캐안되!!!?");
+        test.anlayzePolarity("게임 실행이 안되네요 하라는건지 ");
+        test.anlayzePolarity("업데이트 이후로 지속적으로 튕깁니다. 삭제 후 다시 받으려고 재설치중에도 튕깁니다. 빠른 해결 부탁드립니다");
+        test.anlayzePolarity("22000원 결제했는데~ 뭐죠? 해결해주세요~ 아니면환불해주세여~ㅠㅠ");
+        test.anlayzePolarity("계좌인증에서 진행안되요 벌써40분째 막혀있음");
 
 
         System.out.println("Finished ..");

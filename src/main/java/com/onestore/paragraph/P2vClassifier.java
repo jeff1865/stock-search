@@ -70,7 +70,7 @@ public class P2vClassifier {
 
     void makeParagraphVectors() throws Exception {
 //        File resource = new File("/Users/a1000074/IdeaProjects/ClusterDoc/sample/f_voc_comment.txt");
-        File resource = new File("/Users/a1000074/dev/temp-comment/train/comment_voc_train_1000.txt");
+        File resource = new File("/Users/a1000074/dev/temp-comment/train/train_voc_1000p.txt");
 
         // build a iterator for our dataset
 //        iterator = new FileLabelAwareIterator.Builder()
